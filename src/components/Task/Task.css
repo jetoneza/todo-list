@@ -1,0 +1,41 @@
+.EditIcon {
+  display: none;
+}
+
+.Item:hover {
+  border: 1px solid #eee;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
+}
+
+.Item:hover .EditIcon {
+  display: block;
+}
+
+.CompleteIcon {
+  border: 2px solid;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: auto;
+  color: black;
+  position: relative;
+}
+
+.CompleteIcon:hover {
+  margin: auto;
+  border-radius: 0;
+  border-color: transparent;
+}
+
+.CompleteIcon:hover:after {
+  display: 'block';
+  content: '';
+  width: 7px;
+  height: 14px;
+  border: solid #3f51b5;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 5px;
+}
