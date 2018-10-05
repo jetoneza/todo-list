@@ -12,6 +12,10 @@
   background-color: #f8f9fa;
 }
 
+.Item.active input {
+  background-color: #f8f9fa;
+}
+
 .Item.active .EditIcon,
 .Item:hover .EditIcon {
   display: block;
@@ -44,4 +48,14 @@
   transform: rotate(45deg);
   position: absolute;
   left: 5px;
+}
+
+input {
+  border: none;
+  font-size: 1em;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
 }

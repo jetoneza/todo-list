@@ -26,7 +26,7 @@ class TodoList extends React.Component {
 
     const task = {
       id,
-      task: `Task ${id}`,
+      task: '',
       isCompleted: false,
     };
 
@@ -55,6 +55,26 @@ class TodoList extends React.Component {
     this.setState({ list: newList });
   }
 
+  handleOnTextTaskChange = (taskId, value) => {
+    const { list } = this.state;
+    const task = list[taskId];
+
+    if (task) {
+      const newTask = {
+        ...task,
+        task: value,
+      };
+
+      list[newTask.id] = newTask;
+
+      this.setState({
+        list: {
+          ...list,
+        },
+      });
+    }
+  }
+
   renderList = () => {
     const { list, activeTask } = this.state;
 
@@ -66,6 +86,7 @@ class TodoList extends React.Component {
           const item = list[key];
           return (
             <Task
+              onTextChange={this.handleOnTextTaskChange}
               onCompleteClick={this.handleCompleteTaskClick}
               onClick={this.handleTaskClick}
               key={key}
