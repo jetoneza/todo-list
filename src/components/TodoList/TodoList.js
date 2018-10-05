@@ -17,7 +17,8 @@ import Task from '../Task';
 
 class TodoList extends React.Component {
   state = {
-    list: [],
+    list: {},
+    activeTask: null,
   };
 
   handleAddTaskClick = () => {
@@ -27,14 +28,40 @@ class TodoList extends React.Component {
       id,
       task: `Task ${id}`,
       isCompleted: false,
-    }
+    };
 
     this.setState({
-      list: [
+      list: {
+        [task.id]: task,
         ...this.state.list,
-        task,
-      ],
+      },
+      activeTask: task.id,
     });
+  }
+
+  handleTaskClick = (taskId) => {
+    this.setState({ activeTask: taskId });
+  }
+
+  renderList = () => {
+    const { list, activeTask } = this.state;
+
+    const keys = Object.keys(list);
+
+    return (
+      <List>
+        { keys.map(key => {
+          const item = list[key];
+          return (
+            <Task
+              onClick={this.handleTaskClick}
+              key={key}
+              item={item}
+              activeTask={activeTask}/>
+          );
+        }) }
+      </List>
+    );
   }
 
   render() {
@@ -63,13 +90,7 @@ class TodoList extends React.Component {
               </Button>
             </div>
 
-            <List>
-              { list.map(item => {
-                return (
-                  <Task key={item.id} item={item}/>
-                );
-              }) }
-            </List>
+            { this.renderList() }
 
           </Paper>
         </main>

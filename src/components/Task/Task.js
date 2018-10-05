@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   ListItem,
   ListItemText,
@@ -10,17 +11,23 @@ import {
 import './Task.css';
 
 class Task extends React.Component {
+  handleItemClick = () => {
+    this.props.onClick(this.props.item.id);
+  }
+
   render() {
-    const { item } = this.props;
+    const { item, activeTask } = this.props;
+    const isActive = activeTask === item.id;
+
     return (
       <React.Fragment key={item.id}>
-        <ListItem className="Item">
+        <ListItem className={`Item ${isActive ? 'active' : ''}`}>
           <Tooltip title="Mark Complete">
             <Icon color="primary">
               <div className="CompleteIcon"/>
             </Icon>
           </Tooltip>
-          <ListItemText inset>{item.task}</ListItemText>
+          <ListItemText inset onClick={this.handleItemClick}>{item.task}</ListItemText>
           <Icon className="EditIcon">edit</Icon>
         </ListItem>
         <Divider inset component="li" />
@@ -28,5 +35,11 @@ class Task extends React.Component {
     );
   }
 }
+
+Task.propTypes = {
+  item: PropTypes.object.isRequired,
+  activeTask: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
 
 export default Task;
