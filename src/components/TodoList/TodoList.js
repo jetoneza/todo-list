@@ -43,6 +43,18 @@ class TodoList extends React.Component {
     this.setState({ activeTask: taskId });
   }
 
+  handleCompleteTaskClick = (taskId) => {
+    const newList = {
+      ...this.state.list,
+    };
+
+    if (newList[taskId]) {
+      delete newList[taskId];
+    }
+
+    this.setState({ list: newList });
+  }
+
   renderList = () => {
     const { list, activeTask } = this.state;
 
@@ -54,6 +66,7 @@ class TodoList extends React.Component {
           const item = list[key];
           return (
             <Task
+              onCompleteClick={this.handleCompleteTaskClick}
               onClick={this.handleTaskClick}
               key={key}
               item={item}

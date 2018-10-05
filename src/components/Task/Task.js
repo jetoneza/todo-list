@@ -15,6 +15,10 @@ class Task extends React.Component {
     this.props.onClick(this.props.item.id);
   }
 
+  handleCompleteClick = () => {
+    this.props.onCompleteClick(this.props.item.id);
+  }
+
   render() {
     const { item, activeTask } = this.props;
     const isActive = activeTask === item.id;
@@ -23,7 +27,7 @@ class Task extends React.Component {
       <React.Fragment key={item.id}>
         <ListItem className={`Item ${isActive ? 'active' : ''}`}>
           <Tooltip title="Mark Complete">
-            <Icon color="primary">
+            <Icon color="primary" onClick={this.handleCompleteClick}>
               <div className="CompleteIcon"/>
             </Icon>
           </Tooltip>
