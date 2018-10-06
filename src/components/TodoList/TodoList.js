@@ -15,68 +15,33 @@ import styles from './styles';
 
 import Task from '../Task';
 
+import { connect } from 'react-redux'
+import {
+  createTask,
+  setActiveTask,
+  completeTask,
+  editTask,
+} from '../../actions';
+
 class TodoList extends React.Component {
-  state = {
-    list: {},
-    activeTask: null,
-  };
-
   handleAddTaskClick = () => {
-    const id = Date.now();
-
-    const task = {
-      id,
-      task: '',
-      isCompleted: false,
-    };
-
-    this.setState({
-      list: {
-        [task.id]: task,
-        ...this.state.list,
-      },
-      activeTask: task.id,
-    });
+    this.props.createTask();
   }
 
   handleTaskClick = (taskId) => {
-    this.setState({ activeTask: taskId });
+    this.props.setActiveTask(taskId);
   }
 
   handleCompleteTaskClick = (taskId) => {
-    const newList = {
-      ...this.state.list,
-    };
-
-    if (newList[taskId]) {
-      delete newList[taskId];
-    }
-
-    this.setState({ list: newList });
+    this.props.completeTask(taskId);
   }
 
   handleOnTextTaskChange = (taskId, value) => {
-    const { list } = this.state;
-    const task = list[taskId];
-
-    if (task) {
-      const newTask = {
-        ...task,
-        task: value,
-      };
-
-      list[newTask.id] = newTask;
-
-      this.setState({
-        list: {
-          ...list,
-        },
-      });
-    }
+    this.props.editTask(taskId, value);
   }
 
   renderList = () => {
-    const { list, activeTask } = this.state;
+    const { list, activeTask } = this.props;
 
     const keys = Object.keys(list);
 
@@ -98,9 +63,14 @@ class TodoList extends React.Component {
     );
   }
 
+  getListLength = (list) => {
+    const keys = Object.keys(list);
+
+    return keys.length;
+  }
+
   render() {
-    const { classes } = this.props;
-    const { list } = this.state;
+    const { classes, list } = this.props;
 
     return (
       <React.Fragment>
@@ -112,7 +82,7 @@ class TodoList extends React.Component {
                 TASKS
               </Typography>
               <Typography variant="title" gutterBottom>
-                My Simple List ({ list.length })
+                My Simple List ({ this.getListLength(list) })
               </Typography>
             </div>
             <Divider />
@@ -135,6 +105,23 @@ class TodoList extends React.Component {
 
 TodoList.propTypes = {
   classes: PropTypes.object.isRequired,
+  list: PropTypes.object.isRequired,
+  createTask: PropTypes.func.isRequired,
+  setActiveTask: PropTypes.func.isRequired,
+  completeTask: PropTypes.func.isRequired,
+  editTask: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(TodoList);
+const mapActionCreators = {
+  createTask,
+  setActiveTask,
+  completeTask,
+  editTask,
+};
+
+const mapStateToProps = (state) => ({
+  list: state.list,
+  activeTask: state.activeTask,
+})
+
+export default withStyles(styles)(connect(mapStateToProps, mapActionCreators)(TodoList));
